@@ -4,8 +4,8 @@ from telegram.ext import  Application, CommandHandler, MessageHandler, filters, 
 
 TOKEN: Final = '6890618870:AAFiVEaM5_LntbXhJmpXxyYEk295NvQ783M'
 BOT_USERNAME: Final = '@group_growth_rewardbot'
-GROUP_CHAT_ID =  -4017579752
-user_ids = [634917137] 
+GROUP_CHAT_ID =  '76'
+user_ids = '98765' 
 
 user_invites = {}
 
@@ -27,22 +27,15 @@ async def invite_command(update: Update, context: CallbackContext):
     user_id = update.message.from_user.id
     user_first_name = update.message.from_user.first_name
 
-    # Check if the user is a member of the group
-    chat_member = await context.bot.get_chat_member(GROUP_CHAT_ID, user_id)
-
-    if chat_member.status in ['member', 'administrator', 'creator']:
-        # Check if the user has actually invited someone before incrementing invites
-        if user_id in user_invites:
-            user_invites[user_id] += 1
-        else:
-            user_invites[user_id] = 1
-
-        total_invites = user_invites[user_id]
-
-        await update.message.reply_text(f"Congratulations, {user_first_name}! You've earned a reward for inviting someone to the group. Total invites: {total_invites}")
+    # Check if the user has actually invited someone before incrementing invites
+    if user_id in user_invites:
+        user_invites[user_id] += 1
     else:
-        invite_link = 'https://t.me/+xutown9xFzNiOTc0'
-        await update.message.reply_text(f'You must first join our group. You can join the group using this [link]({invite_link}).', parse_mode='Markdown')
+        user_invites[user_id] = 1
+
+    total_invites = user_invites[user_id]
+
+    await update.message.reply_text(f"Congratulations, {user_first_name}! You've earned a reward for inviting someone to the group. Total invites: {total_invites}")
 
         
 if __name__ == '__main__':
