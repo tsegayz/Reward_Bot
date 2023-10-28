@@ -4,7 +4,9 @@ from telegram.ext import  Application, CommandHandler, MessageHandler, filters, 
 
 TOKEN: Final = '6890618870:AAFiVEaM5_LntbXhJmpXxyYEk295NvQ783M'
 BOT_USERNAME: Final = '@group_growth_rewardbot'
-GROUP_CHAT_ID = "group_id"
+GROUP_CHAT_ID =  '345678'
+admin_user_ids = '12345'
+
 user_invites = {}
 
 bot = Bot(token=TOKEN)
@@ -20,10 +22,8 @@ async def help_command(update: Update, context: CallbackContext):
 async def invite_command(update: Update, context: CallbackContext):
     user_id = update.message.from_user.id
 
-    # Checking if a user is in the group
-    chat_member = await context.bot.get_chat_member(GROUP_CHAT_ID, user_id)
-
-    if chat_member.status == 'member':
+    # Check if the user is an admin/owner
+    if user_id in admin_user_ids:
         # Check if the user has actually invited someone before incrementing invites
         if user_id in user_invites:
             user_invites[user_id] += 1
