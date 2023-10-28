@@ -4,8 +4,8 @@ from telegram.ext import  Application, CommandHandler, MessageHandler, filters, 
 
 TOKEN: Final = '6890618870:AAFiVEaM5_LntbXhJmpXxyYEk295NvQ783M'
 BOT_USERNAME: Final = '@group_growth_rewardbot'
-GROUP_CHAT_ID =  '345678'
-admin_user_ids = '12345'
+GROUP_CHAT_ID =  '87654'
+user_ids = '234567'
 
 user_invites = {}
 
@@ -21,21 +21,26 @@ async def help_command(update: Update, context: CallbackContext):
 #this is the function that checks if the user added contacts to the group and provides reward
 async def invite_command(update: Update, context: CallbackContext):
     user_id = update.message.from_user.id
+    user_first_name = update.message.from_user.first_name
 
-    # Check if the user is an admin/owner
-    if user_id in admin_user_ids:
+    # Check if the user is a member of the group
+    chat_member = await context.bot.get_chat_member(GROUP_CHAT_ID, user_id)
+
+    if chat_member.status in ['member', 'administrator', 'creator']:
         # Check if the user has actually invited someone before incrementing invites
         if user_id in user_invites:
             user_invites[user_id] += 1
-            await update.message.reply_text(f"Congratulations! You've earned a reward for inviting {user_id.first_name} to the group. Total invites: {user_invites[user_id]}")
         else:
-            invite_link = 'https://t.me/+xutown9xFzNiOTc0'  
-            await update.message.reply_text(f'You haven\'t invited anyone yet. Please invite someone to the group first. You can join the group using this [link]({invite_link}).', parse_mode='Markdown')
+            user_invites[user_id] = 1
+
+        total_invites = user_invites[user_id]
+
+        await update.message.reply_text(f"Congratulations, {user_first_name}! You've earned a reward for inviting someone to the group. Total invites: {total_invites}")
     else:
-        invite_link = 'https://t.me/+xutown9xFzNiOTc0' 
+        invite_link = 'https://t.me/+xutown9xFzNiOTc0'
         await update.message.reply_text(f'You must first join our group. You can join the group using this [link]({invite_link}).', parse_mode='Markdown')
 
-
+        
 if __name__ == '__main__':
 
     print('starting bot .......')
