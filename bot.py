@@ -4,8 +4,8 @@ from telegram.ext import  Application, CommandHandler, MessageHandler, filters, 
 
 TOKEN: Final = '6890618870:AAFiVEaM5_LntbXhJmpXxyYEk295NvQ783M'
 BOT_USERNAME: Final = '@group_growth_rewardbot'
-GROUP_CHAT_ID =  '87654'
-user_ids = '234567'
+GROUP_CHAT_ID =  -4017579752
+user_ids = [634917137] 
 
 user_invites = {}
 
@@ -17,6 +17,10 @@ async def start_command(update: Update, context: CallbackContext):
 # this the function to guide users understand how the bot works
 async def help_command(update: Update, context: CallbackContext):
     await update.message.reply_text("welcone here you can invite your contacts to join and earn rewards.")
+
+
+async def restart_command(update: Update, context: CallbackContext):
+    await update.message.reply_text("Bot has been restarted. Welcome back!")
 
 #this is the function that checks if the user added contacts to the group and provides reward
 async def invite_command(update: Update, context: CallbackContext):
@@ -49,6 +53,6 @@ if __name__ == '__main__':
     app.add_handler(CommandHandler("start", start_command))
     app.add_handler(CommandHandler("help", help_command))
     app.add_handler(CommandHandler("invite", invite_command))  
-    # app.add_handler(MessageHandler(filters.StatusUpdate.NEW_CHAT_MEMBERS, gainReward_command))
+    app.add_handler(CommandHandler("restart", restart_command))
 
     app.run_polling(poll_interval=3)
